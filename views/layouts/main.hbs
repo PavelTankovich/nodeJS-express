@@ -1,7 +1,10 @@
-{{> head }}
+{{!-- подключение блоков из папки partials --}}
+{{> head }} 
 <body>
+{{> navbar }} 
 
     <div class="container">
+{{!-- подключение страниц из папки views (указана в кофигурации index.js) --}}
         {{{ body }}}
 
         {{> footer}}

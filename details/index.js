@@ -31,6 +31,12 @@ app.set('view engine', 'hbs');
 app.set('views', 'views');
 
 /**
+ * Метод позволяет добавлять доп-ую функц-ть (middleware)
+ * express.static('public') - метод установки поиска статики для express
+ */
+app.use(express.static('public'));
+
+/**
  * Обработка get запросов
  * 1 параметр - путь
  * 2 параметр - коллбек который принимает
