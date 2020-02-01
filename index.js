@@ -15,6 +15,8 @@ app.set('view engine', 'hbs');
 app.set('views', 'views');
 
 app.use(express.static('public'));
+// TODO: изучить
+app.use(express.urlencoded({extended: false}));
 //регистрация роутов
 app.use('/', homeRoutes);
 app.use('/courses', cousesRoutes);
