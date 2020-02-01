@@ -1,6 +1,8 @@
 const express = require('express');
-const path = require('path');
 const exphbs = require('express-handlebars');
+const homeRoutes = require('./routes/home');
+const cousesRoutes = require('./routes/courses');
+const addRoutes = require('./routes/add');
 
 const app = express();
 const hbs = exphbs.create({
@@ -13,13 +15,10 @@ app.set('view engine', 'hbs');
 app.set('views', 'views');
 
 app.use(express.static('public'));
-
-app.get('/', (req, res) => {
-    res.render('index'); 
-});
-app.get('/about', (req, res) => {
-    res.render('about'); 
-});
+//регистрация роутов
+app.use('/', homeRoutes);
+app.use('/courses', cousesRoutes);
+app.use('/add', addRoutes);
 
 const PORT = process.env.PORT || 8000;
 
