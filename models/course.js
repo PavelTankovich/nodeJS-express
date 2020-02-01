@@ -13,7 +13,7 @@ class Course {
     getCourseInfo () {
         return {
             name: this.name,
-            price: this.price,
+            price: Course.convertPrice(this.price),
             image: this.image,
             id: this.id,
         };
@@ -38,6 +38,14 @@ class Course {
         });
     };
 
+    
+    static convertPrice (price) {
+        return new Intl.NumberFormat('by-BY', {
+            currency: 'BYN',
+            style: 'currency'
+        }).format(price);
+    }
+
     static getAll () {
         return new Promise((resolve, reject) => {
             fs.readFile(
@@ -50,6 +58,12 @@ class Course {
                 }
             );
         });
+    };
+
+    static async getCourse (id) {
+        const courses = await Course.getAll();
+
+        return courses.find(course => course.id === id);
     };
 };
 
