@@ -3,48 +3,56 @@ const fs = require('fs');
 const path = require('path');
 
 class Course {
-    constructor (name, price, image) {
+    constructor (name, price, image, id) {
         this.name = name;
         this.price = price;
+        this.defaultPrice = price;
         this.image = image;
-        this.id = uuid();
+        this.id = id || uuid();
     }
-
-    getCourseInfo () {
-        return {
-            name: this.name,
-            price: Course.convertPrice(this.price),
-            image: this.image,
-            id: this.id,
-        };
-    };
 
     async save ()  {
         const courses = await Course.getAll();
-        const newCourse = this.getCourseInfo();
+        const newCourse = Course.getCourseInfo(this);
 
         courses.push(newCourse);
 
+        return Course.writeCoursesToBD(courses);
+    };
+
+    static writeCoursesToBD (courses) {
         return new Promise((resolve, reject) => {
             fs.writeFile(
                 path.join(__dirname, '../data/courses.json'),
                 JSON.stringify(courses),
                 (err) => {
                     if (err) reject(err);
-    
+
                     resolve();
                 }
             );
         });
-    };
-
-    
-    static convertPrice (price) {
-        return new Intl.NumberFormat('by-BY', {
-            currency: 'BYN',
-            style: 'currency'
-        }).format(price);
     }
+
+    static async updateCourse (course) {
+        const courses = await Course.getAll();
+        const index = courses.findIndex(_course => _course.id === course['c-id']);
+
+        courses[index] = Course.getCourseInfo({
+            name: course['c-name'],
+            price: course['c-price'],
+            image: course['c-image'],
+            id: course['c-id']
+        });
+        
+        return Course.writeCoursesToBD(courses);
+    }
+
+    static async getCourse (id) {
+        const courses = await Course.getAll();
+
+        return courses.find(course => course.id === id);
+    };
 
     static getAll () {
         return new Promise((resolve, reject) => {
@@ -59,11 +67,22 @@ class Course {
             );
         });
     };
+    
+    static convertPrice (price) {
+        return new Intl.NumberFormat('us-US', {
+            currency: 'EUR',
+            style: 'currency'
+        }).format(price);
+    }
 
-    static async getCourse (id) {
-        const courses = await Course.getAll();
-
-        return courses.find(course => course.id === id);
+    static getCourseInfo ({name, price, image, id}) {
+        return {
+            name,
+            defaultPrice: price,
+            price: Course.convertPrice(price),
+            image,
+            id,
+        };
     };
 };
 

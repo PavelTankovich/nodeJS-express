@@ -6,6 +6,22 @@
     font-size: 1.5rem;
 }
 
+.card-action {
+    display: flex;
+}
+
+.card-image {
+    max-height: 170px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card .card-image img {
+    width: auto;
+    height: 170px;
+}
+
 .course {
     width: 100%;
     display: flex;

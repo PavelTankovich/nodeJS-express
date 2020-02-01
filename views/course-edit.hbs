@@ -1,0 +1,23 @@
+<h1>Edit {{course.name}}</h1>
+
+<form action="/courses/edit" method="post">
+    <div class="input-field">
+        <input placeholder="title" name="c-name" id="c-title" type="text" class="validate" value="{{course.name}}" required>
+        <label for="c-title">Course Name</label>
+        <span class="helper-text" data-error="Write Course name"></span>
+    </div>
+    <div class="input-field">
+        <input placeholder="Price" name="c-price" id="c-price" type="text" pattern="\d+" class="validate" value="{{course.defaultPrice}}" required>
+        <label for="c-price">Course Price</label>
+        <span class="helper-text" data-error="Write Course price"></span>
+    </div>
+    <div class="input-field">
+        <input placeholder="Image" name="c-image" id="c-image" type="text" class="validate" value="{{course.image}}" required>
+        <label for="c-image">Course Image</label>
+        <span class="helper-text" data-error="Write url image"></span>
+    </div>
+
+    <input type="hidden" name="c-id" value="{{course.id}}">
+
+    <button class="btn btn-primary">Save</button>
+</form>
